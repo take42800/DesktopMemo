@@ -7,11 +7,84 @@
         xmlns:v="clr-namespace:DesktopMemo.Views"
         xmlns:vm="clr-namespace:DesktopMemo.ViewModels"
         Title="MemoWindow" Height="350" Width="525"
-        ShowInTaskbar="False" >
+        ShowInTaskbar="False"
+        Background="Black" >
 
     <Window.DataContext>
         <vm:MemoWindowViewModel/>
     </Window.DataContext>
+
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="{x:Static SystemParameters.CaptionHeight}"
+                      ResizeBorderThickness="{x:Static SystemParameters.WindowResizeBorderThickness}"
+                      UseAeroCaptionButtons="False"/>
+    </WindowChrome.WindowChrome>
+
+    <Window.Resources>
+        <Style x:Key="CaptionButtonStyleKey" TargetType="{x:Type Button}">
+            <Setter Property="Width" Value="34"/>
+            <Setter Property="Height" Value="24"/>
+            <Setter Property="OverridesDefaultStyle" Value="True" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontFamily" Value="Marlett"/>
+            <Setter Property="IsTabStop" Value="False"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="Padding" Value="1" />
+            <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="border" Background="Transparent" SnapsToDevicePixels="True">
+                            <Border.Effect>
+                                <DropShadowEffect Opacity="0"/>
+                            </Border.Effect>
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal">
+                                        <Storyboard>
+                                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="border">
+                                                <EasingDoubleKeyFrame KeyTime="0" Value="0.6"/>
+                                            </DoubleAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="MouseOver">
+                                        <Storyboard>
+                                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="border">
+                                                <EasingDoubleKeyFrame KeyTime="0" Value="1"/>
+                                            </DoubleAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Pressed">
+                                        <Storyboard>
+                                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="border">
+                                                <EasingDoubleKeyFrame KeyTime="0" Value="1"/>
+                                            </DoubleAnimationUsingKeyFrames>
+                                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.ShadowDepth)" Storyboard.TargetName="border">
+                                                <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                                            </DoubleAnimationUsingKeyFrames>
+                                            <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.Color)" Storyboard.TargetName="border">
+                                                <EasingColorKeyFrame KeyTime="0" Value="White"/>
+                                            </ColorAnimationUsingKeyFrames>
+                                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.Opacity)" Storyboard.TargetName="border">
+                                                <EasingDoubleKeyFrame KeyTime="0" Value="0.6"/>
+                                            </DoubleAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Disabled"/>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <ContentPresenter x:Name="contentPresenter" Focusable="False" Margin="{TemplateBinding Padding}"
+                                      HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        </Style>
+    </Window.Resources>
 
     <i:Interaction.Triggers>
 
@@ -33,6 +106,55 @@
     </i:Interaction.Triggers>
 
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
         
+        <!-- キャプションバー左側 -->
+        <StackPanel Orientation="Horizontal" Margin="5,4,5,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    
+                    Grid.Row="0">
+            <!-- 新規作成 -->
+            <Button Content="a" Style="{DynamicResource CaptionButtonStyleKey}" FontSize="18">
+                <ToolTipService.ToolTip>
+                    <ToolTip Content="New Memo"/>
+                </ToolTipService.ToolTip>
+            </Button>
+            
+            <!-- 設定とか -->
+            <Button Content="III" Style="{DynamicResource CaptionButtonStyleKey}" FontSize="18" FontFamily="None"
+                    Width="24" Height="34" Margin="10,1,0,0">
+                <!-- ≡ みたいなやつを出したいので IIIを90度回転させる -->
+                <Button.RenderTransform>
+                    <RotateTransform Angle="90" CenterX="12" CenterY="12"/>
+                </Button.RenderTransform>
+                <ToolTipService.ToolTip>
+                    <ToolTip Content="Setting"/>
+                </ToolTipService.ToolTip>
+            </Button>
+        </StackPanel>
+        
+        <!-- キャプションバー右側 -->
+        <StackPanel Orientation="Horizontal" Margin="0,5,5,0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Grid.Row="0">
+            <!-- ×ボタン -->
+            <Button Content="r" Style="{DynamicResource CaptionButtonStyleKey}" FontSize="14">
+                <ToolTipService.ToolTip>
+                    <ToolTip Content="Delete"/>
+                </ToolTipService.ToolTip>
+            </Button>
+        </StackPanel>
+
+        <!-- テキストボックス TODO: マウスオーバー時のボーダー消し -->
+        <TextBox Grid.Row="1" Foreground="White" Background="Transparent" BorderBrush="Transparent" SelectionBrush="Transparent"
+                 AcceptsReturn="True" TextWrapping="Wrap" VerticalContentAlignment="Top" AcceptsTab="True">
+            <TextBox.Resources>
+            </TextBox.Resources>
+        </TextBox>
     </Grid>
 </Window>
