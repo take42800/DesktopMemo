@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 
 namespace DesktopMemo.Views.Behavior
 {
@@ -13,10 +8,12 @@ namespace DesktopMemo.Views.Behavior
         {
             return (bool)obj.GetValue(CloseProperty);
         }
+
         public static void SetClose(DependencyObject obj, bool value)
         {
             obj.SetValue(CloseProperty, value);
         }
+
         // Using a DependencyProperty as the backing store for Close.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty CloseProperty =
             DependencyProperty.RegisterAttached("Close", typeof(bool), typeof(CloseWindowBehavior), new PropertyMetadata(false, OnCloseChanged));

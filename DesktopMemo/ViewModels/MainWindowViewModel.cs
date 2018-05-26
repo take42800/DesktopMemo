@@ -1,26 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.ComponentModel;
-using System.Windows;
-
-using Livet;
-using Livet.Commands;
+﻿using Livet;
 using Livet.Messaging;
-using Livet.Messaging.IO;
-using Livet.EventListeners;
-using Livet.Messaging.Windows;
-
-using DesktopMemo.Models;
 
 namespace DesktopMemo.ViewModels
 {
     public class MainWindowViewModel : ViewModel
     {
-
-
         #region CloseWindow変更通知プロパティ
+
         private bool _CloseWindow;
 
         public bool CloseWindow
@@ -35,8 +21,8 @@ namespace DesktopMemo.ViewModels
                 RaisePropertyChanged(nameof(CloseWindow));
             }
         }
-        #endregion
 
+        #endregion CloseWindow変更通知プロパティ
 
         /// <summary>
         /// コンストラクタ
@@ -44,7 +30,6 @@ namespace DesktopMemo.ViewModels
         public MainWindowViewModel()
         {
         }
-
 
         /// <summary>
         /// 初期化
@@ -63,8 +48,5 @@ namespace DesktopMemo.ViewModels
             // 画面を閉じるとき
             // CloseWindow = true;
         }
-
-
-
     }
 }

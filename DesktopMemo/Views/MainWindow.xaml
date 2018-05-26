@@ -12,31 +12,29 @@
         ShowInTaskbar="False" Opacity ="0" AllowsTransparency="True" WindowStyle="None" Visibility="Collapsed">
     <!-- WindowState="Minimized"  -->
     <!-- Minimizedをつけると子ウィンドウが表示されなくなる -->
-    
+
     <Window.DataContext>
-        <vm:MainWindowViewModel/>
+        <vm:MainWindowViewModel />
     </Window.DataContext>
 
     <i:Interaction.Triggers>
 
         <!--WindowのContentRenderedイベントのタイミングでViewModelのInitializeメソッドが呼ばれます-->
         <i:EventTrigger EventName="ContentRendered">
-            <l:LivetCallMethodAction MethodTarget="{Binding}" MethodName="Initialize"/>
+            <l:LivetCallMethodAction MethodTarget="{Binding}" MethodName="Initialize" />
         </i:EventTrigger>
 
         <!--Windowが閉じたタイミングでViewModelのDisposeメソッドが呼ばれます-->
         <i:EventTrigger EventName="Closed">
-            <l:DataContextDisposeAction/>
+            <l:DataContextDisposeAction />
         </i:EventTrigger>
 
         <l:InteractionMessageTrigger MessageKey="NewMemo" Messenger="{Binding Messenger}">
-            <l:TransitionInteractionMessageAction 
+            <l:TransitionInteractionMessageAction
                 WindowType="{x:Type v:MemoWindow}" Mode="Normal" />
         </l:InteractionMessageTrigger>
-
     </i:Interaction.Triggers>
-    
+
     <Grid Visibility="Hidden">
-        
     </Grid>
 </Window>
